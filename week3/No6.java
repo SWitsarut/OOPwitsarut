@@ -3,7 +3,6 @@ import java.util.Scanner;
 public class No6 {
 
 	public static void main(String[] args) {
-
 		System.out.println("No6 ");
 		Scanner scanner = new Scanner(System.in);
 		if (isPalindrom(scanner.nextLine())) {
