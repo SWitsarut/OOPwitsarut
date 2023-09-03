@@ -27,5 +27,6 @@ public class CountAppearNumber {
         for (int i : numCount) {
             System.out.print(i + " ");
         }
+        scanner.close();
     }
 }
