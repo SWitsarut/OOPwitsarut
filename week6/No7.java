@@ -1,6 +1,8 @@
 public class No7 {
     public static void main(String[] args) {
-        MyRectangle2D rec = new MyRectangle2D();
+        MyRectangle2D rec = new MyRectangle2D(0, 0, 200, 200);
+        MyRectangle2D rec2 = new MyRectangle2D(1999999, 0, 1, 1);
+        System.out.println(rec.contain(10, 0));
     }
 }
 
@@ -72,37 +74,45 @@ class MyRectangle2D extends Rectangle {
     }
 
     public boolean contain(double x, double y) {
-        boolean containLeft = x >= super.getX() - super.getWidth() / 2;
-        boolean containRight = x <= super.getX() + super.getWidth() / 2;
-        boolean containTop = y <= super.getY() + super.getHeight() / 2;
-        boolean containBot = y >= super.getY() - super.getHeight() / 2;
+        boolean containLeft = x >= (super.getX() - super.getWidth() / 2);
+        boolean containRight = x <= (super.getX() + super.getWidth() / 2);
+        boolean containTop = y <= (super.getY() + super.getHeight() / 2);
+        boolean containBot = y >= (super.getY() - super.getHeight() / 2);
         boolean isContain = containBot && containLeft && containTop && containRight;
         return isContain;
     }
 
-    public boolean contain(MyRectangle2D r) {
-        double Hulx = super.getX() - super.getWidth() / 2, Huly = super.getY() + super.getHeight() / 2,
-                Hbrx = super.getX() + super.getWidth() / 2, Hbry = super.getX() - super.getHeight() / 2;
-        double Gulx = r.getX() - r.getWidth() / 2, Guly = r.getY() + r.getHeight() / 2,
-                Gbrx = r.getX() + r.getWidth() / 2, Gbry = r.getX() - r.getHeight() / 2;
+    public boolean contains(MyRectangle2D r) {
+        double thisLeftX = super.getX() - super.getWidth() / 2;
+        double thisRightX = super.getX() + super.getWidth() / 2;
+        double thisTopY = super.getY() + super.getHeight() / 2;
+        double thisBottomY = super.getY() - super.getHeight() / 2;
 
-        boolean UlxisBiggerThatSquare = Hulx < Gulx;
-        boolean UlyisBiggerThatSquare = Huly > Guly;
-        boolean BrxisBiggerThatSquare = Hbrx > Gbrx;
-        boolean BryisBiggerThatSquare = Hbry < Gbry;
-        return UlxisBiggerThatSquare && UlyisBiggerThatSquare && BrxisBiggerThatSquare && BryisBiggerThatSquare;
+        double otherLeftX = r.getX() - r.getWidth() / 2;
+        double otherRightX = r.getX() + r.getWidth() / 2;
+        double otherTopY = r.getY() + r.getHeight() / 2;
+        double otherBottomY = r.getY() - r.getHeight() / 2;
+
+        boolean containsX = thisLeftX <= otherLeftX && thisRightX >= otherRightX;
+        boolean containsY = thisBottomY <= otherBottomY && thisTopY >= otherTopY;
+
+        return containsX && containsY;
     }
 
     public boolean overlaps(MyRectangle2D r) {
-        double Hulx = super.getX() - super.getWidth() / 2, Huly = super.getY() + super.getHeight() / 2,
-                Hbrx = super.getX() + super.getWidth() / 2, Hbry = super.getX() - super.getHeight() / 2;
-        double Gulx = r.getX() - r.getWidth() / 2, Guly = r.getY() + r.getHeight() / 2,
-                Gbrx = r.getX() + r.getWidth() / 2, Gbry = r.getX() - r.getHeight() / 2;
+        double thisLeftX = super.getX() - super.getWidth() / 2;
+        double thisRightX = super.getX() + super.getWidth() / 2;
+        double thisTopY = super.getY() + super.getHeight() / 2;
+        double thisBottomY = super.getY() - super.getHeight() / 2;
 
-        boolean A = Hulx < Gulx;
-        boolean B = Huly > Guly;
-        boolean C = Hbrx > Gbrx;
-        boolean D = Hbry < Gbry;
-        return (!A || !B || !C || !D) && (A || B || C || D);
+        double otherLeftX = r.getX() - r.getWidth() / 2;
+        double otherRightX = r.getX() + r.getWidth() / 2;
+        double otherTopY = r.getY() + r.getHeight() / 2;
+        double otherBottomY = r.getY() - r.getHeight() / 2;
+
+        boolean noOverlapX = thisRightX < otherLeftX || thisLeftX > otherRightX;
+        boolean noOverlapY = thisTopY < otherBottomY || thisBottomY > otherTopY;
+
+        return !(noOverlapX || noOverlapY);
     }
 }
